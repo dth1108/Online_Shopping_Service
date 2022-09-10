@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deActive(String id) {
+    public void deActivate(String id) {
         log.debug("Request to delete User : {}", id);
         User user = UserRepository.findById(id).orElseThrow(() -> new BusinessErrorException(
                 BusinessError.builder().errorCode("error.user.notFoundWithId")

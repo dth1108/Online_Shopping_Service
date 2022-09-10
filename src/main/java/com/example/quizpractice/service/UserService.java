@@ -59,7 +59,7 @@ public interface UserService {
      */
     void delete(String id);
 
-    void deActive(String id);
+    void deActivate(String id);
 
     Optional<User> findByUsername(String username);
 

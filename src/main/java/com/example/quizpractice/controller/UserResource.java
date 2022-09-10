@@ -121,7 +121,7 @@ public class UserResource {
     @DeleteMapping("/user/{id}")
     public ResponseEntity<Void> deActiveUser(@PathVariable String id) {
         log.debug("REST request to delete User1 : {}", id);
-        userService.deActive(id);
+        userService.deActivate(id);
         return ResponseEntity
                 .noContent()
                 .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
