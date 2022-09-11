@@ -61,6 +61,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(
                 Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         // setAllowCredentials(true) is important, otherwise:
         // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
         configuration.setAllowCredentials(true);
