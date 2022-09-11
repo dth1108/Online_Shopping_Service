@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,6 +71,7 @@ public class UserResource {
 
 
     @GetMapping("/user")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<User>> getAllUsers(
             UserCriteria criteria,
             @org.springdoc.api.annotations.ParameterObject Pageable pageable
@@ -83,6 +85,7 @@ public class UserResource {
 
 
     @PostMapping("/user/register")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<UserRegisterDTO> createUser(
             @Valid @RequestBody UserRegisterDTO UserRegisterDTO)
             throws URISyntaxException {
@@ -98,6 +101,7 @@ public class UserResource {
     }
 
     @PutMapping("/user/{id}")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<UserDTO> updateUser(
             @PathVariable(value = "id", required = false) final String id,
             @RequestBody UserDTO UserDTO)
@@ -112,6 +116,7 @@ public class UserResource {
     }
 
     @GetMapping("/user/{id}")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<User> getUser(@PathVariable String id) {
         log.debug("REST request to get User1 : {}", id);
         Optional<User> user = userService.findOne(id).map((x) -> (x.password("******")));
@@ -119,12 +124,14 @@ public class UserResource {
     }
 
     @DeleteMapping("/user/{id}")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Void> deActiveUser(@PathVariable String id) {
         log.debug("REST request to delete User1 : {}", id);
         userService.deActivate(id);
         return ResponseEntity
                 .noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME,
+                        id.toString()))
                 .build();
     }
 
