@@ -22,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,13 +53,14 @@ public class UserResource {
     ;
     private final com.example.quizpractice.repository.UserRepository UserRepository;
 
-    private final com.example.quizpractice.service.UserQueryService UserQueryService;
+
+    private final com.example.quizpractice.service.queryService.UserQueryService UserQueryService;
 
     public UserResource(com.example.quizpractice.service.UserService userService,
             UserRegisterService userRegisterService, UserUpdateService userUpdateService,
             com.example.quizpractice.service.UserService userService1,
             com.example.quizpractice.repository.UserRepository userRepository,
-            com.example.quizpractice.service.UserQueryService userQueryService) {
+            com.example.quizpractice.service.queryService.UserQueryService userQueryService) {
         UserService = userService;
         this.userRegisterService = userRegisterService;
         this.userUpdateService = userUpdateService;
@@ -71,11 +71,9 @@ public class UserResource {
 
 
     @GetMapping("/user")
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<List<User>> getAllUsers(
-            UserCriteria criteria,
-            @org.springdoc.api.annotations.ParameterObject Pageable pageable
-    ) {
+//    @CrossOrigin(origins = "*")
+    public ResponseEntity<List<User>> getAllUsers(UserCriteria criteria,
+            @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get Users by criteria: {}", criteria);
         Page<User> page = UserQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
@@ -85,38 +83,31 @@ public class UserResource {
 
 
     @PostMapping("/user/register")
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     public ResponseEntity<UserRegisterDTO> createUser(
-            @Valid @RequestBody UserRegisterDTO UserRegisterDTO)
-            throws URISyntaxException {
+            @Valid @RequestBody UserRegisterDTO UserRegisterDTO) throws URISyntaxException {
 
         UserRegisterDTO result = userRegisterService.save(UserRegisterDTO);
 
-        return ResponseEntity
-                .created(new URI("/api/user/register" + "unknow"))
-                .headers(
-                        HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
-                                "unknow"))
+        return ResponseEntity.created(new URI("/api/user/register" + "unknow")).headers(
+                        HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, "unknow"))
                 .body(result);
     }
 
     @PutMapping("/user/{id}")
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     public ResponseEntity<UserDTO> updateUser(
             @PathVariable(value = "id", required = false) final String id,
-            @RequestBody UserDTO UserDTO)
-            throws URISyntaxException {
+            @RequestBody UserDTO UserDTO) throws URISyntaxException {
 
         UserDTO result = userUpdateService.save(id, UserDTO);
-        return ResponseEntity
-                .ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
-                        UserDTO.getId().toString()))
-                .body(result);
+        return ResponseEntity.ok().headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                        UserDTO.getId().toString())).body(result);
     }
 
     @GetMapping("/user/{id}")
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     public ResponseEntity<User> getUser(@PathVariable String id) {
         log.debug("REST request to get User1 : {}", id);
         Optional<User> user = userService.findOne(id).map((x) -> (x.password("******")));
@@ -124,15 +115,20 @@ public class UserResource {
     }
 
     @DeleteMapping("/user/{id}")
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     public ResponseEntity<Void> deActiveUser(@PathVariable String id) {
         log.debug("REST request to delete User1 : {}", id);
         userService.deActivate(id);
-        return ResponseEntity
-                .noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME,
-                        id.toString()))
-                .build();
+        return ResponseEntity.noContent().headers(
+                HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME,
+                        id.toString())).build();
     }
+
+//    @PostMapping("/user/login")
+//    public ResponseEntity<JwtResponse> login(@RequestBody LoginForm loginForm) {
+//        return ResponseEntity.ok(
+//                loginService.responseLogin(loginForm.getUsername(), loginForm.getPassword()));
+//    }
+
 
 }

@@ -3,16 +3,20 @@ package com.example.quizpractice.service.impl;
 import com.example.quizpractice.common.service.BusinessError;
 import com.example.quizpractice.common.service.BusinessErrorException;
 import com.example.quizpractice.domain.User;
-import com.example.quizpractice.dto.UserDTO;
 import com.example.quizpractice.repository.UserRepository;
 import com.example.quizpractice.service.UserService;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.RequestScope;
@@ -23,14 +27,18 @@ import org.springframework.web.context.annotation.RequestScope;
 @Service
 @Transactional
 @RequestScope
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final com.example.quizpractice.repository.UserRepository UserRepository;
 
-    public UserServiceImpl(UserRepository UserRepository) {
+    private final UserRolePermissionImpl userRolePermissionImpl;
+
+    public UserServiceImpl(UserRepository UserRepository,
+            UserRolePermissionImpl userRolePermissionImpl) {
         this.UserRepository = UserRepository;
+        this.userRolePermissionImpl = userRolePermissionImpl;
     }
 
     @Override
@@ -47,42 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> partialUpdate(User User) {
-        log.debug("Request to partially update User : {}", User);
-
-        return UserRepository
-                .findById(User.getId())
-                .map(existingUser -> {
-                    if (User.getUsername() != null) {
-                        existingUser.setUsername(User.getUsername());
-                    }
-                    if (User.getPassword() != null) {
-                        existingUser.setPassword(User.getPassword());
-                    }
-                    if (User.getEmail() != null) {
-                        existingUser.setEmail(User.getEmail());
-                    }
-                    if (User.getFirstName() != null) {
-                        existingUser.setFirstName(User.getFirstName());
-                    }
-                    if (User.getLastName() != null) {
-                        existingUser.setLastName(User.getLastName());
-                    }
-                    if (User.getBirthDate() != null) {
-                        existingUser.setBirthDate(User.getBirthDate());
-                    }
-                    if (User.getGender() != null) {
-                        existingUser.setGender(User.getGender());
-                    }
-                    if (User.getAddress() != null) {
-                        existingUser.setAddress(User.getAddress());
-                    }
-                    if (User.getActive() != null) {
-                        existingUser.setActive(User.getActive());
-                    }
-
-                    return existingUser;
-                })
-                .map(UserRepository::save);
+        return null;
     }
 
     @Override
@@ -125,4 +98,13 @@ public class UserServiceImpl implements UserService {
         return UserRepository.findByUsername(email);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = UserRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("NotFoundUserWithUsername"));
+        Collection<? extends GrantedAuthority> authorities = userRolePermissionImpl.populateAuthorities(
+                username);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),
+                user.getPassword(), authorities);
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.quizpractice.service;
+package com.example.quizpractice.service.queryService;
 
 
 import com.example.quizpractice.domain.User;
