@@ -14,4 +14,5 @@ public class UserDTO implements IUserDTO {
     private Long gender;
     private String address;
     private Long active;
+    private String roles;
 }

@@ -27,7 +27,7 @@ import org.springframework.web.context.annotation.RequestScope;
 @Service
 @Transactional
 @RequestScope
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -98,13 +98,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return UserRepository.findByUsername(email);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = UserRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("NotFoundUserWithUsername"));
-        Collection<? extends GrantedAuthority> authorities = userRolePermissionImpl.populateAuthorities(
-                username);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), authorities);
-    }
+
 }

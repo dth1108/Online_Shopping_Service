@@ -20,4 +20,5 @@ public interface IUserDTO {
 
     Long getActive();
 
+    String getRoles();
 }

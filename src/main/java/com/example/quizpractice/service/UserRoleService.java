@@ -6,4 +6,8 @@ import java.util.Optional;
 
 public interface UserRoleService {
     List<UserRole> getAllUserRolesByUserId(String userId);
+
+    Optional<UserRole> getFirstUserRolesByUserId(String userId);
+
+    void setRoleDefaultByUserId(String userId);
 }

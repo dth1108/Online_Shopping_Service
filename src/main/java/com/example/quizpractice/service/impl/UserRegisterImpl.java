@@ -6,9 +6,9 @@ import com.example.quizpractice.common.service.BusinessErrorException;
 import com.example.quizpractice.domain.User;
 import com.example.quizpractice.dto.UserRegisterDTO;
 import com.example.quizpractice.service.UserRegisterService;
+import com.example.quizpractice.service.UserRoleService;
 import com.example.quizpractice.service.UserService;
 import java.util.Collections;
-import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,11 @@ public class UserRegisterImpl implements UserRegisterService {
 
     private final UserService userService;
 
-    public UserRegisterImpl(UserService userService) {
+    private final UserRoleService userRoleService;
+
+    public UserRegisterImpl(UserService userService, UserRoleService userRoleService) {
         this.userService = userService;
+        this.userRoleService = userRoleService;
     }
 
 
@@ -42,8 +45,12 @@ public class UserRegisterImpl implements UserRegisterService {
 
         userService.save(user);
         userRegisterDTO.setPassword("*******");
+
         userRegisterDTO.setId(
                 userService.findByUsername(userRegisterDTO.getUsername()).get().getId());
+
+        userRoleService.setRoleDefaultByUserId(userRegisterDTO.getId());
+
         return userRegisterDTO;
     }
 

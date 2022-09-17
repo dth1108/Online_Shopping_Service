@@ -1,13 +1,14 @@
-package com.example.quizpractice.domain;
+package com.example.quizpractice.common.sso.payload;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
-@Data
-public class LoginForm {
 
+@Data
+public class LoginRequest {
     @NotBlank
     private String username;
+
     @NotBlank
     private String password;
 }

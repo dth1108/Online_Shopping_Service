@@ -2,11 +2,18 @@ package com.example.quizpractice.service.queryService;
 
 
 import com.example.quizpractice.domain.User;
+import com.example.quizpractice.domain.UserRole;
 import com.example.quizpractice.domain.User_;
+import com.example.quizpractice.dto.UserDTO;
+import com.example.quizpractice.repository.RoleRepository;
 import com.example.quizpractice.repository.UserRepository;
+import com.example.quizpractice.service.LoginService;
+import com.example.quizpractice.service.UserRoleService;
 import com.example.quizpractice.service.criteria.UserCriteria;
 import io.github.jhipster.service.QueryService;
 import java.util.List;
+import java.util.Optional;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,8 +37,21 @@ public class UserQueryService extends QueryService<User> {
 
     private final com.example.quizpractice.repository.UserRepository UserRepository;
 
-    public UserQueryService(UserRepository UserRepository) {
+    private final LoginService loginService;
+
+    private final ModelMapper modelMap;
+
+    private final UserRoleService userRoleService;
+
+    private final RoleRepository roleRepository;
+
+    public UserQueryService(UserRepository UserRepository, LoginService loginService,
+            ModelMapper modelMap, UserRoleService userRoleService, RoleRepository roleRepository) {
         this.UserRepository = UserRepository;
+        this.loginService = loginService;
+        this.modelMap = modelMap;
+        this.userRoleService = userRoleService;
+        this.roleRepository = roleRepository;
     }
 
     /**
@@ -61,7 +81,26 @@ public class UserQueryService extends QueryService<User> {
         Page<User> result = UserRepository.findAll(specification, page).map((user) -> (
                 user.password("********")
         ));
-        return UserRepository.findAll(specification, page);
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> findByCriteriaUserDTO(UserCriteria criteria, Pageable page) {
+
+        log.debug("find by criteria : {}, page: {}", criteria, page);
+        final Specification<User> specification = createSpecification(criteria);
+        Page<User> result = UserRepository.findAll(specification, page).map((user) -> (
+                user.password("********")
+        ));
+        Page<UserDTO> resultDTO = result.map((user) -> (
+                modelMap.map(user, UserDTO.class)
+        ));
+        resultDTO.forEach((user) -> {
+            Optional<UserRole> userRole = userRoleService.getFirstUserRolesByUserId(user.getId());
+            user.setRoles(loginService.getRole(
+                    roleRepository.findById(userRole.get().getRoleId()).get().getRoleName()));
+        });
+        return resultDTO;
     }
 
     /**

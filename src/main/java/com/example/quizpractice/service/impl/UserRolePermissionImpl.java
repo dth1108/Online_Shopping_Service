@@ -60,7 +60,6 @@ public class UserRolePermissionImpl implements UserRolePermissionService {
                                 .params(Collections.singletonList(username)).build()));
 
         List<UserRole> listRoles = userRoleService.getAllUserRolesByUserId(user.getId());
-        System.out.println(listRoles);
         List<String> permissionsCode = new ArrayList<>();
         if (listRoles != null && listRoles.size() > 0) {
             listRoles.forEach((role) -> {

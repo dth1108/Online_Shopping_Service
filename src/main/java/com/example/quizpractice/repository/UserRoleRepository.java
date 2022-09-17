@@ -19,6 +19,8 @@ public interface UserRoleRepository extends JpaRepository<UserRole, String>,
     Optional<UserRole> findByUserId(String id);
 
     List<UserRole> findAllByUserId(String id);
+    Optional<UserRole> findFirstByUserId(String id);
+
 
 
 }
