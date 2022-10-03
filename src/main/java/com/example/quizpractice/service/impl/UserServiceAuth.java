@@ -31,7 +31,6 @@ public class UserServiceAuth implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("NotFoundUserWithUsername"));
         Collection<? extends GrantedAuthority> authorities = userRolePermissionImpl.populateAuthorities(
                 username);
-        System.out.println("authorities"+ authorities);
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(), authorities);
     }

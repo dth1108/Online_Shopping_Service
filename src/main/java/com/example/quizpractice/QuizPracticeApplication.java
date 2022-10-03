@@ -10,9 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-//@Configuration
-//@EnableAutoConfiguration
-//@ComponentScan
 public class QuizPracticeApplication {
 
     public static void main(String[] args) {

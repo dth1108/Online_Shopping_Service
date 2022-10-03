@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
 //                .antMatchers("/api/test2").hasAnyAuthority("READ_LIST_USERe")
-                .antMatchers("/api/login", "/api/test", "/api/user/register").permitAll()
+                .antMatchers("/api/login", "/api/test", "/api/user/register","/api/**").permitAll()
                 .anyRequest()
                 .authenticated();
 

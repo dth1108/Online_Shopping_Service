@@ -5,6 +5,7 @@ import com.example.quizpractice.service.UserRoleService;
 import java.util.List;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +26,8 @@ public class TestController {
 
     @GetMapping("/test")
     public String getUser() {
-
-        return "test";
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     @GetMapping("/test2")

@@ -5,11 +5,13 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
+import org.springframework.boot.actuate.audit.listener.AuditListener;
 
 /**
  * A User.
@@ -18,6 +20,7 @@ import org.hibernate.annotations.Where;
 @Table(name = "user")
 @Where(clause = "is_deleted = 0")
 @SuppressWarnings("common-java:DuplicatedBlocks")
+//@EntityListeners(AuditListener.class)
 public class User
         extends AuditableEntity
         implements Serializable {
