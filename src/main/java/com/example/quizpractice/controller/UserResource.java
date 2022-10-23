@@ -161,9 +161,17 @@ public class UserResource {
             return ResponseEntity.ok(
                     new LoginResponse(jwt, loginService.getRole(loginRequest.getUsername())));
         } catch (AuthenticationException e) {
-            log.error("loi"+e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @GetMapping("/myProfile")
+    public ResponseEntity<User> myProfile() {
+
+        User result = userUpdateService.myProfile();
+        return ResponseEntity.ok().headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                        "")).body(result);
     }
 
 
