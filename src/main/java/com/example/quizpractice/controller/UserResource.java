@@ -173,6 +173,15 @@ public class UserResource {
                 HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
                         "")).body(result);
     }
+    @PostMapping("/editProfile")
+    public ResponseEntity<?> editProfile(@RequestBody User request){
+        try {
+            userService.editProfile(request);
+            return  ResponseEntity.ok().body("Success!");
+        }catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
 }
