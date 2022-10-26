@@ -29,8 +29,8 @@ public class QuiztResource {
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/deletequizt")
-    public ResponseEntity<?> deleteQuizts(@RequestParam("qid") String qid){
+    @DeleteMapping("/deletequizt/{qid}")
+    public ResponseEntity<?> deleteQuizts( @PathVariable("qid") String qid){
         try {
             quiztService.deleteQuizts(qid);
             return  ResponseEntity.ok().build();
@@ -38,8 +38,8 @@ public class QuiztResource {
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/getquizt")
-    public ResponseEntity<?> getQuizt(@RequestParam("qid") String qid){
+    @GetMapping("/getquizt/{qid}")
+    public ResponseEntity<?> getQuizt(@PathVariable("qid") String qid){
         try {
             Quizt q = quiztService.getQuizt(qid);
             System.out.println(q.getCode());
