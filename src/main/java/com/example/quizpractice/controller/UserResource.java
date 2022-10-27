@@ -176,8 +176,8 @@ public class UserResource {
     @PostMapping("/editProfile")
     public ResponseEntity<?> editProfile(@RequestBody User request){
         try {
-            User u = userService.
-//            User u = new  User();
+//            User u = userService.
+            User u = new  User();
             u.setId(request.getId());
             u.setUsername(request.getUsername());
             u.setEmail(request.getEmail());
