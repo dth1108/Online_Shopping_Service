@@ -176,7 +176,18 @@ public class UserResource {
     @PostMapping("/editProfile")
     public ResponseEntity<?> editProfile(@RequestBody User request){
         try {
-            userService.editProfile(request);
+            User u = userService.
+//            User u = new  User();
+            u.setId(request.getId());
+            u.setUsername(request.getUsername());
+            u.setEmail(request.getEmail());
+            u.setFirstName(request.getFirstName());
+            u.setLastName(request.getLastName());
+            u.setBirthDate(request.getBirthDate());
+            u.setGender(request.getGender());
+            u.setAddress(request.getAddress());
+            u.setActive(request.getActive());
+            userService.editProfile(u);
             return  ResponseEntity.ok().body("Success!");
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

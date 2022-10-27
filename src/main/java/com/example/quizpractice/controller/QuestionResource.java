@@ -1,5 +1,6 @@
 package com.example.quizpractice.controller;
 
+import com.example.quizpractice.domain.Question;
 import com.example.quizpractice.domain.Quizt;
 import com.example.quizpractice.service.QuestionService;
 import com.example.quizpractice.service.QuiztService;
@@ -27,7 +28,7 @@ public class QuestionResource {
     public ResponseEntity<?> getListQuestion(@RequestParam("quizId") String quizId, @RequestParam("index") int index , @RequestParam("pageSize") int pageSize){
         try {
             System.out.println(quizId);
-            ArrayList<Quizt> quizts = quiztService.getQuiztsBySubjectid(quizId,index,pageSize);
+            ArrayList<Question> quizts = questionService.getListQuestion(quizId,index,pageSize);
             return  ResponseEntity.ok().body(quizts);
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -36,7 +37,7 @@ public class QuestionResource {
     @DeleteMapping("/deletequestion/{qid}")
     public ResponseEntity<?> deleteQuestion( @PathVariable("qid") String qid){
         try {
-            quiztService.deleteQuizts(qid);
+            questionService.deleteQuestion(qid);
             return  ResponseEntity.ok().build();
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -45,8 +46,7 @@ public class QuestionResource {
     @GetMapping("/getquestion/{qid}")
     public ResponseEntity<?> getQuestion(@PathVariable("qid") String qid){
         try {
-            Quizt q = quiztService.getQuizt(qid);
-            System.out.println(q.getCode());
+            Question q = questionService.getQuestion(qid);
             return  ResponseEntity.ok().body(q);
         }catch (Exception e){
             System.out.println(e);
@@ -54,9 +54,9 @@ public class QuestionResource {
         }
     }
     @PostMapping("/addquestion")
-    public ResponseEntity<?> addQuestion(@RequestBody Quizt request){
+    public ResponseEntity<?> addQuestion(@RequestBody Question request){
         try {
-            quiztService.addQuizt(request);
+            questionService.addQuestion(request);
             System.out.println(request.toString());
             return  ResponseEntity.ok().build();
         }catch (Exception e){
@@ -64,11 +64,10 @@ public class QuestionResource {
         }
     }
     @PostMapping("/editquestion")
-    public ResponseEntity<?> editQuestion(@RequestBody Quizt request){
+    public ResponseEntity<?> editQuestion(@RequestBody Question request){
         try {
-            quiztService.editQuizt(request);
+            questionService.editQuestion(request);
             System.out.println(request.toString());
-
             return  ResponseEntity.ok().build();
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
