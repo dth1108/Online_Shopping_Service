@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -24,6 +25,15 @@ public class QuiztResource {
         try {
             System.out.println(subid);
             ArrayList<Quizt> quizts = quiztService.getQuiztsBySubjectid(subid,index,pageSize);
+            return  ResponseEntity.ok().body(quizts);
+        }catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/getallquizts")
+    public ResponseEntity<?> getAllListQuizts(){
+        try {
+            List<Quizt> quizts = quiztService.getAllQuizts();
             return  ResponseEntity.ok().body(quizts);
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

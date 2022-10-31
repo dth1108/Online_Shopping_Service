@@ -19,13 +19,13 @@ public class Question {
     @Column(name = "quiztID")
     private String quiztId;
     @Basic
-    @Column(name = "questionText")
+    @Column(name = "question_text")
     private String questionText;
     @Basic
-    @Column(name = "totalAnswer")
+    @Column(name = "total_answer")
     private String totalAnswer;
     @Basic
-    @Column(name = "isDeleted")
+    @Column(name = "is_deleted")
     private Boolean isDeleted;
     @Basic
     @Column(name = "QuiztsubjectID")

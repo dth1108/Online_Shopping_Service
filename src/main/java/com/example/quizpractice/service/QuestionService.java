@@ -3,9 +3,11 @@ package com.example.quizpractice.service;
 import com.example.quizpractice.domain.Question;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface QuestionService {
     public ArrayList<Question> getListQuestion(String quizId,int index, int pageSize) ;
+     public List<Question> getAllQuestion();
     public void addQuestion(Question question);
     public void deleteQuestion(String qid);
     public void editQuestion( Question question);

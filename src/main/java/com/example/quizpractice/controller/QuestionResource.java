@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -29,6 +30,15 @@ public class QuestionResource {
         try {
             System.out.println(quizId);
             ArrayList<Question> quizts = questionService.getListQuestion(quizId,index,pageSize);
+            return  ResponseEntity.ok().body(quizts);
+        }catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/getallquestion")
+    public ResponseEntity<?> getAllQuestion(){
+        try {
+            List<Question> quizts = questionService.getAllQuestion();
             return  ResponseEntity.ok().body(quizts);
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
