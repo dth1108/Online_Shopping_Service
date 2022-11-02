@@ -1,18 +1,13 @@
 package com.example.quizpractice.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "question", schema = "quizpractice", catalog = "")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Question {
+public class QuestionEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "ID")
     private String id;
     @Basic
@@ -123,6 +118,13 @@ public class Question {
         this.rightAnswer = rightAnswer;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionEntity that = (QuestionEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(quiztId, that.quiztId) && Objects.equals(quiztsubjectId, that.quiztsubjectId) && Objects.equals(isDeleted, that.isDeleted) && Objects.equals(questionText, that.questionText) && Objects.equals(totalAnswer, that.totalAnswer) && Objects.equals(answer1, that.answer1) && Objects.equals(answer2, that.answer2) && Objects.equals(answer3, that.answer3) && Objects.equals(rightAnswer, that.rightAnswer);
+    }
 
     @Override
     public int hashCode() {
