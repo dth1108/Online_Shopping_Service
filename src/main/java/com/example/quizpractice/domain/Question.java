@@ -41,7 +41,7 @@ public class Question {
     private String answer3;
     @Basic
     @Column(name = "right_answer")
-    private Integer rightAnswer;
+    private String rightAnswer;
 
     public String getId() {
         return id;
@@ -115,14 +115,13 @@ public class Question {
         this.answer3 = answer3;
     }
 
-    public Integer getRightAnswer() {
+    public String getRightAnswer() {
         return rightAnswer;
     }
 
-    public void setRightAnswer(Integer rightAnswer) {
+    public void setRightAnswer(String rightAnswer) {
         this.rightAnswer = rightAnswer;
     }
-
 
     @Override
     public int hashCode() {
