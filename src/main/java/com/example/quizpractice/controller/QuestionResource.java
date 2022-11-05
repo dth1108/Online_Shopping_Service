@@ -26,10 +26,10 @@ public class QuestionResource {
 
 
     @GetMapping("/getlistquestion")
-    public ResponseEntity<?> getListQuestion(@RequestParam("quizId") String quizId, @RequestParam("index") int index , @RequestParam("pageSize") int pageSize){
+    public ResponseEntity<?> getListQuestion(@RequestParam("quizId") String quizId){
         try {
             System.out.println(quizId);
-            ArrayList<Question> quizts = questionService.getListQuestion(quizId,index,pageSize);
+            ArrayList<Question> quizts = questionService.getListQuestion(quizId);
             return  ResponseEntity.ok().body(quizts);
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

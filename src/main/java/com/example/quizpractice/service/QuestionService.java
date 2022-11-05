@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface QuestionService {
-    public ArrayList<Question> getListQuestion(String quizId,int index, int pageSize) ;
+    public ArrayList<Question> getListQuestion(String quizId) ;
      public List<Question> getAllQuestion();
     public void addQuestion(Question question);
     public void deleteQuestion(String qid);

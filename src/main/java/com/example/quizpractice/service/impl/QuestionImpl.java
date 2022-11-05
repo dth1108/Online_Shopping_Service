@@ -20,14 +20,13 @@ public class QuestionImpl implements QuestionService {
     private final QuestionRepository questionRepository;
 
     @Override
-    public ArrayList<Question> getListQuestion(String quizId, int index, int pageSize) {
-        ArrayList<Question> questions = questionRepository.getListQuestions(quizId,index,pageSize);
-        return null;
+    public ArrayList<Question> getListQuestion(String quizId) {
+        ArrayList<Question> questions = questionRepository.getListQuestions(quizId);
+        return questions;
     }
 
     @Override
     public List<Question> getAllQuestion() {
-
         return questionRepository.findAll();
     }
 
