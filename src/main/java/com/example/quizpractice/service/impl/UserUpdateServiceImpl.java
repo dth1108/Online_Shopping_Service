@@ -42,7 +42,9 @@ public class UserUpdateServiceImpl implements UserUpdateService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userService.findByUsername(currentPrincipalName);
-        user.get().password("");
+//        User profile = user.get();
+//        profile.password("1");
+//        return profile;
         return user.get();
     }
 
