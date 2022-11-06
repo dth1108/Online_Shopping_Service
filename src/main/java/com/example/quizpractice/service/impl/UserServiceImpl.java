@@ -98,5 +98,10 @@ public class UserServiceImpl implements UserService {
         return UserRepository.findByUsername(email);
     }
 
+    @Override
+    public void editProfile(User request) {
+        UserRepository.save(request);
+    }
+
 
 }
