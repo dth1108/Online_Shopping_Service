@@ -51,7 +51,8 @@ public class SubjectResource {
 
     private final SubjectQueryService subjectQueryService;
 
-    public SubjectResource(SubjectService subjectService, SubjectRepository subjectRepository, SubjectQueryService subjectQueryService) {
+    public SubjectResource(SubjectService subjectService, SubjectRepository subjectRepository,
+            SubjectQueryService subjectQueryService) {
         this.subjectService = subjectService;
         this.subjectRepository = subjectRepository;
         this.subjectQueryService = subjectQueryService;
@@ -61,41 +62,42 @@ public class SubjectResource {
      * {@code POST  /subjects} : Create a new subject.
      *
      * @param subject the subject to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new subject, or with status {@code 400 (Bad Request)} if the subject has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
+     * subject, or with status {@code 400 (Bad Request)} if the subject has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/subjects")
-    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) throws URISyntaxException {
-        String username =SecurityContextHolder.getContext().getAuthentication().getName();
-        Subject result = subjectService.save(subject,username);
+    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject)
+            throws URISyntaxException {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Subject result = subjectService.save(subject, username);
         return ResponseEntity
-            .created(new URI("/api/subjects/" + result.getId()))
-            .headers(
-                    HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .created(new URI("/api/subjects/" + result.getId()))
+                .headers(
+                        HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
+                                result.getId().toString()))
+                .body(result);
     }
 
     /**
      * {@code PUT  /subjects/:id} : Updates an existing subject.
      *
-     * @param id the id of the subject to save.
+     * @param id      the id of the subject to save.
      * @param subject the subject to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated subject,
-     * or with status {@code 400 (Bad Request)} if the subject is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the subject couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated
+     * subject, or with status {@code 400 (Bad Request)} if the subject is not valid, or with status
+     * {@code 500 (Internal Server Error)} if the subject couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/subjects/{id}")
-    public ResponseEntity<Subject> updateSubject(@PathVariable(value = "id", required = false) final String id, @RequestBody Subject subject)
-        throws URISyntaxException {
-        String username =SecurityContextHolder.getContext().getAuthentication().getName();
-        Subject result = subjectService.update(id,subject,username);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, subject.getId().toString()))
-            .body(result);
+    public ResponseEntity<Subject> updateSubject(
+            @PathVariable(value = "id", required = false) final String id,
+            @RequestBody Subject subject)
+            throws URISyntaxException {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Subject result = subjectService.update(id, subject, username);
+        return ResponseEntity.ok().body(result);
     }
-
 
 
     /**
@@ -103,15 +105,17 @@ public class SubjectResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of subjects in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of subjects in
+     * body.
      */
     @GetMapping("/subjects")
     public ResponseEntity<List<Subject>> getAllSubjects(
-        SubjectCriteria criteria,
-        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+            SubjectCriteria criteria,
+            @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         Page<Subject> page = subjectQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+                ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -134,8 +138,9 @@ public class SubjectResource {
         log.debug("REST request to delete Subject : {}", id);
         subjectService.delete(id);
         return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
+                .noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME,
+                        id.toString()))
+                .build();
     }
 }
