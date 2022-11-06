@@ -26,7 +26,7 @@ public interface BlogService {
      * @param blog the entity to update.
      * @return the persisted entity.
      */
-    Blog update(Blog blog);
+    Blog update(String id,Blog blog);
 
     /**
      * Partially updates a blog.

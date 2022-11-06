@@ -1,7 +1,10 @@
 package com.example.quizpractice.service.impl;
 
+import com.example.quizpractice.common.service.BusinessError;
+import com.example.quizpractice.common.service.BusinessErrorException;
 import com.example.quizpractice.domain.Blog;
 import com.example.quizpractice.domain.Image;
+import com.example.quizpractice.domain.Subject;
 import com.example.quizpractice.dto.BlogDTO;
 import com.example.quizpractice.dto.IBlogDTO;
 import com.example.quizpractice.repository.BlogRepository;
@@ -15,6 +18,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 import javax.sql.rowset.serial.SerialBlob;
@@ -84,10 +88,28 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    public Blog update(Blog blog) {
+    public Blog update(String id, Blog blog) {
+        Blog blogRoot = blogRepository.findById(id)
+                .orElseThrow(() -> new BusinessErrorException(
+                        BusinessError.builder().errorCode("error.subject.notFoundWithId")
+                                .params(Collections.singletonList(id))
+                                .build()));
+//        validationCommon(blog);
+        blogRoot.title(blog.getTitle()).imageID(blog.getImageID())
+                .contentText(blog.getContentText());
         log.debug("Request to update Blog : {}", blog);
-        return blogRepository.save(blog);
+        return blogRepository.save(blogRoot);
     }
+
+//    public void validationCommon(Blog blog) {
+//        if (blogRepository.finfByTitle(blog.getTitle()).isPresent()) {
+//            throw new BusinessErrorException(
+//                    BusinessError.builder().errorCode("error.user.codeAlreadyExisted")
+//                            .params(Collections.singletonList(blog.getTitle()))
+//                            .build());
+//        }
+//
+//    }
 
     @Override
     public Optional<Blog> partialUpdate(Blog blog) {

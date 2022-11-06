@@ -55,7 +55,8 @@ public class BlogResource {
 
     private final BlogQueryService blogQueryService;
 
-    public BlogResource(BlogService blogService, BlogRepository blogRepository, BlogQueryService blogQueryService) {
+    public BlogResource(BlogService blogService, BlogRepository blogRepository,
+            BlogQueryService blogQueryService) {
         this.blogService = blogService;
         this.blogRepository = blogRepository;
         this.blogQueryService = blogQueryService;
@@ -65,7 +66,8 @@ public class BlogResource {
      * {@code POST  /blogs} : Create a new blog.
      *
      * @param blog the blog to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new blog, or with status {@code 400 (Bad Request)} if the blog has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
+     * blog, or with status {@code 400 (Bad Request)} if the blog has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/blogs")
@@ -73,45 +75,44 @@ public class BlogResource {
             throws URISyntaxException, SQLException {
         Blog result = blogService.save(blog);
         return ResponseEntity
-            .created(new URI("/api/blogs/" + result.getId()))
-            .headers(
-                    HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .created(new URI("/api/blogs/" + result.getId()))
+                .headers(
+                        HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
+                                result.getId().toString()))
+                .body(result);
     }
-
-
-
 
 
     /**
      * {@code PUT  /blogs/:id} : Updates an existing blog.
      *
-     * @param id the id of the blog to save.
+     * @param id   the id of the blog to save.
      * @param blog the blog to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated blog,
-     * or with status {@code 400 (Bad Request)} if the blog is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the blog couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated
+     * blog, or with status {@code 400 (Bad Request)} if the blog is not valid, or with status
+     * {@code 500 (Internal Server Error)} if the blog couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/blogs/{id}")
-    public ResponseEntity<Blog> updateBlog(@PathVariable(value = "id", required = false) final String id, @Valid @RequestBody Blog blog)
-        throws URISyntaxException {
+    public ResponseEntity<Blog> updateBlog(
+            @PathVariable(value = "id", required = false) final String id,
+            @Valid @RequestBody Blog blog)
+            throws URISyntaxException {
         log.debug("REST request to update Blog : {}, {}", id, blog);
 
-        Blog result = blogService.update(blog);
+        Blog result = blogService.update(id, blog);
         return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, blog.getId().toString()))
-            .body(result);
+                .ok(result);
     }
 
 
-
     @GetMapping("/blogs")
-    public ResponseEntity<List<Blog>> getAllBlogs(BlogCriteria criteria, @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<Blog>> getAllBlogs(BlogCriteria criteria,
+            @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get Blogs by criteria: {}", criteria);
         Page<Blog> page = blogQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+                ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -131,7 +132,8 @@ public class BlogResource {
      * {@code GET  /blogs/:id} : get the "id" blog.
      *
      * @param id the id of the blog to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the blog, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the blog, or
+     * with status {@code 404 (Not Found)}.
      */
     @GetMapping("/blogs/{id}")
     public ResponseEntity<Blog> getBlog(@PathVariable String id) {
@@ -151,8 +153,9 @@ public class BlogResource {
         log.debug("REST request to delete Blog : {}", id);
         blogService.delete(id);
         return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
+                .noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME,
+                        id.toString()))
+                .build();
     }
 }
