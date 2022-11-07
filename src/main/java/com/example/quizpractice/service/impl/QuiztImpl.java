@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,6 +23,11 @@ public class QuiztImpl  implements QuiztService {
     public ArrayList<Quizt> getQuiztsBySubjectid(String subid, int index, int page) {
         ArrayList<Quizt> quizts  = quiztRepository.getListQuizts(subid,(index-1)*page,page);
         return quizts;
+    }
+
+    @Override
+    public List<Quizt> getAllQuizts() {
+        return quiztRepository.findAll();
     }
 
     @Override
