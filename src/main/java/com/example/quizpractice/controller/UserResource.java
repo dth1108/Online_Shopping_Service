@@ -179,7 +179,7 @@ public class UserResource {
             User u = UserRepository.getOne(request.getId());
 //            User u = new  User();
             u.setId(request.getId());
-            u.setUsername(request.getUsername());
+//            u.setUsername(request.getUsername());
             u.setEmail(request.getEmail());
             u.setFirstName(request.getFirstName());
             u.setLastName(request.getLastName());
@@ -187,6 +187,7 @@ public class UserResource {
             u.setGender(request.getGender());
             u.setAddress(request.getAddress());
             u.setActive(request.getActive());
+            System.out.println(u.getPassword());
             userService.editProfile(u);
             return  ResponseEntity.ok().body("Success!");
         }catch (Exception e){

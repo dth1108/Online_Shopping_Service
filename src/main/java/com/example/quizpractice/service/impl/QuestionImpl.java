@@ -3,11 +3,12 @@ package com.example.quizpractice.service.impl;
 import com.example.quizpractice.domain.Question;
 import com.example.quizpractice.repository.QuestionRepository;
 import com.example.quizpractice.service.QuestionService;
+import com.example.quizpractice.service.model.AnswerRespone;
+import com.example.quizpractice.service.model.GetAnswerRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class QuestionImpl implements QuestionService {
 
     @Override
     public void deleteQuestion(String qid) {
-    questionRepository.deleteById(qid);
+        questionRepository.deleteById(qid);
     }
 
     @Override
@@ -50,4 +51,26 @@ public class QuestionImpl implements QuestionService {
     public Question getQuestion(String qid) {
         return questionRepository.getOne(qid);
     }
+
+    @Override
+    public ArrayList<AnswerRespone> getAnswerRespone(String quizId, ArrayList<GetAnswerRequest> requests) {
+        ArrayList<Question> questions = questionRepository.getListQuestions(quizId);
+        ArrayList<AnswerRespone> respones = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++) {
+
+            AnswerRespone answerRespone = new AnswerRespone();
+            answerRespone.setQuestid(questions.get(i).getId());
+            answerRespone.setYourAnswer(requests.get(i).getAnswer());
+            answerRespone.setCorrectAnswer(questions.get(i).getRightAnswer());
+            if (requests.get(i).getAnswer().equals(questions.get(i).getRightAnswer())) {
+                answerRespone.setCorrect(true);
+            }else {
+                answerRespone.setCorrect(false);
+            }
+            respones.add(answerRespone);
+        }
+        return respones;
+    }
+
+
 }
