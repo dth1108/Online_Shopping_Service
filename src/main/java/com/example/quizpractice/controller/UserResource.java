@@ -7,6 +7,7 @@ import com.example.quizpractice.common.sso.jwt.JwtTokenProvider;
 import com.example.quizpractice.common.sso.payload.LoginRequest;
 import com.example.quizpractice.common.sso.payload.LoginResponse;
 import com.example.quizpractice.domain.User;
+import com.example.quizpractice.dto.MyProfileDTO;
 import com.example.quizpractice.dto.UserDTO;
 import com.example.quizpractice.dto.UserRegisterDTO;
 import com.example.quizpractice.service.LoginService;
@@ -166,8 +167,8 @@ public class UserResource {
     }
 
     @PostMapping("/myProfile")
-    public ResponseEntity<User> myProfile(String username) {
-        User result = userUpdateService.myProfile(username);
+    public ResponseEntity<User> myProfile(@RequestBody MyProfileDTO myProfileDTO) {
+        User result = userUpdateService.myProfile(myProfileDTO.getUsername());
         return ResponseEntity.ok().headers(
                 HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
                         "")).body(result);
@@ -189,9 +190,9 @@ public class UserResource {
             u.setActive(request.getActive());
             System.out.println(u.getPassword());
             userService.editProfile(u);
-            return  ResponseEntity.ok().body("Success!");
-        }catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.ok().body("Success!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
