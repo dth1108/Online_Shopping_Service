@@ -4,12 +4,15 @@ import com.example.quizpractice.common.repository.AuditableEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
+import org.springframework.boot.actuate.audit.listener.AuditListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A Subject.
@@ -17,6 +20,8 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name = "subject")
 @Where(clause = "is_deleted = 0")
+@EntityListeners(AuditListener.class)
+
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Subject

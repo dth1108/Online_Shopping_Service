@@ -3,12 +3,15 @@ package com.example.quizpractice.domain;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
+import org.springframework.boot.actuate.audit.listener.AuditListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A RolePermission.
@@ -17,6 +20,9 @@ import org.hibernate.annotations.Where;
 @Table(name = "role_permission")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 @Where(clause = "is_deleted = 0")
+@EntityListeners(AuditListener.class)
+
+
 public class RolePermission implements Serializable {
 
     private static final long serialVersionUID = 1L;

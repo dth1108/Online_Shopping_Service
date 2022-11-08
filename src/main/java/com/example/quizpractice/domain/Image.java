@@ -4,11 +4,14 @@ import com.example.quizpractice.common.repository.AuditableEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.actuate.audit.listener.AuditListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A Image.
@@ -16,6 +19,9 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "image")
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@EntityListeners(AuditListener.class)
+
+
 public class Image
         extends AuditableEntity
         implements Serializable {

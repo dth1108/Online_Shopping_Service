@@ -5,7 +5,7 @@ import com.example.quizpractice.dto.UserDTO;
 
 public interface UserUpdateService {
     UserDTO save(String id, UserDTO UserDTO);
-    User myProfile();
+    User myProfile(String username);
 
 
     void validationCommon(String id,UserDTO UserDTO);

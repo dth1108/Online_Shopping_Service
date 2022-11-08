@@ -165,16 +165,16 @@ public class UserResource {
         }
     }
 
-    @GetMapping("/myProfile")
-    public ResponseEntity<User> myProfile() {
-
-        User result = userUpdateService.myProfile();
+    @PostMapping("/myProfile")
+    public ResponseEntity<User> myProfile(String username) {
+        User result = userUpdateService.myProfile(username);
         return ResponseEntity.ok().headers(
                 HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
                         "")).body(result);
     }
+
     @PostMapping("/editProfile")
-    public ResponseEntity<?> editProfile(@RequestBody User request){
+    public ResponseEntity<?> editProfile(@RequestBody User request) {
         try {
             User u = UserRepository.getOne(request.getId());
 //            User u = new  User();
