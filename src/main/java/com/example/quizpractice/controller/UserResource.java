@@ -7,6 +7,7 @@ import com.example.quizpractice.common.sso.jwt.JwtTokenProvider;
 import com.example.quizpractice.common.sso.payload.LoginRequest;
 import com.example.quizpractice.common.sso.payload.LoginResponse;
 import com.example.quizpractice.domain.User;
+import com.example.quizpractice.dto.ChangePasswordDTO;
 import com.example.quizpractice.dto.MyProfileDTO;
 import com.example.quizpractice.dto.UserDTO;
 import com.example.quizpractice.dto.UserRegisterDTO;
@@ -73,6 +74,7 @@ public class UserResource {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final LoginService loginService;
+
 
     public UserResource(com.example.quizpractice.service.UserService userService,
             UserRegisterService userRegisterService, UserUpdateService userUpdateService,
@@ -151,6 +153,7 @@ public class UserResource {
     public ResponseEntity<LoginResponse> authenticateUser(
             @Valid @RequestBody LoginRequest loginRequest) {
         try {
+            userUpdateService.verify(loginRequest);
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),
@@ -172,6 +175,13 @@ public class UserResource {
         return ResponseEntity.ok().headers(
                 HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
                         "")).body(result);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        userUpdateService.changePassword(changePasswordDTO.getUsername(),
+                changePasswordDTO.getOldPassword(), changePasswordDTO.getNewPassword());
+        return ResponseEntity.ok().body("Success!");
     }
 
     @PostMapping("/editProfile")
