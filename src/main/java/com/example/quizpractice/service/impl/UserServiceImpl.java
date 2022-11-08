@@ -85,7 +85,12 @@ public class UserServiceImpl implements UserService {
                 BusinessError.builder().errorCode("error.user.notFoundWithId")
                         .params(Collections.singletonList(id))
                         .build()));
-        UserRepository.save(user.active(0L));
+        if (user.getActive() == 1L) {
+            user.setActive(0L);
+        } else {
+            user.setActive(1L);
+        }
+        UserRepository.save(user);
     }
 
     @Override
