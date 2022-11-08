@@ -38,13 +38,8 @@ public class UserUpdateServiceImpl implements UserUpdateService {
     }
 
     @Override
-    public User myProfile() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        Optional<User> user = userService.findByUsername(currentPrincipalName);
-//        User profile = user.get();
-//        profile.password("1");
-//        return profile;
+    public User myProfile(String username) {
+        Optional<User> user = userService.findByUsername(username);
         return user.get();
     }
 

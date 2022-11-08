@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.actuate.audit.listener.AuditListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A Blog.
@@ -12,6 +14,9 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "blog")
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@EntityListeners(AuditListener.class)
+
+
 public class Blog
         extends AuditableEntity
         implements Serializable {

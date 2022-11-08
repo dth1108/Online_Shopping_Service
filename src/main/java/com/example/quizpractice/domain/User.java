@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
 import org.springframework.boot.actuate.audit.listener.AuditListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A User.
@@ -20,7 +21,8 @@ import org.springframework.boot.actuate.audit.listener.AuditListener;
 @Table(name = "user")
 @Where(clause = "is_deleted = 0")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-//@EntityListeners(AuditListener.class)
+@EntityListeners(AuditListener.class)
+
 public class User
         extends AuditableEntity
         implements Serializable {
@@ -95,6 +97,22 @@ public class User
     public User password(String password) {
         this.setPassword(password);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", gender=" + gender +
+                ", address='" + address + '\'' +
+                ", active=" + active +
+                '}';
     }
 
     public void setPassword(String password) {
@@ -211,20 +229,4 @@ public class User
         return getClass().hashCode();
     }
 
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + getId() +
-                ", username='" + getUsername() + "'" +
-                ", password='" + getPassword() + "'" +
-                ", email='" + getEmail() + "'" +
-                ", firstName='" + getFirstName() + "'" +
-                ", lastName='" + getLastName() + "'" +
-                ", birthDate=" + getBirthDate() +
-                ", gender=" + getGender() +
-                ", address='" + getAddress() + "'" +
-                ", active=" + getActive() +
-                "}";
-    }
 }

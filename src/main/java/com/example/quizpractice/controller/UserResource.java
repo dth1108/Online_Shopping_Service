@@ -165,21 +165,21 @@ public class UserResource {
         }
     }
 
-    @GetMapping("/myProfile")
-    public ResponseEntity<User> myProfile() {
-
-        User result = userUpdateService.myProfile();
+    @PostMapping("/myProfile")
+    public ResponseEntity<User> myProfile(String username) {
+        User result = userUpdateService.myProfile(username);
         return ResponseEntity.ok().headers(
                 HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
                         "")).body(result);
     }
+
     @PostMapping("/editProfile")
-    public ResponseEntity<?> editProfile(@RequestBody User request){
+    public ResponseEntity<?> editProfile(@RequestBody User request) {
         try {
             userService.editProfile(request);
-            return  ResponseEntity.ok().body("Success!");
-        }catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.ok().body("Success!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
