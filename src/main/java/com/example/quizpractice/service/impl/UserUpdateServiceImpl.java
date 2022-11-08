@@ -28,16 +28,19 @@ public class UserUpdateServiceImpl implements UserUpdateService {
     }
 
     @Override
-    public UserDTO save(String id, UserDTO UserDTO) {
-        validationCommon(id, UserDTO);
-        User user = new User();
-        user.id(id).email(UserDTO.getEmail()).firstName(UserDTO.getFirstName())
-                .lastName(UserDTO.getLastName()).birthDate(UserDTO.getBirthDate())
-                .gender(UserDTO.getGender()).address(UserDTO.getAddress()).isDeleted(0L);
-        user.setActive(UserDTO.getActive());
-        userService.save(user);
-        UserDTO.setId(id);
-        return UserDTO;
+    public UserDTO save(String id, UserDTO userDTO) {
+        validationCommon(id, userDTO);
+        User user = userService.findOne(id).get();
+        user
+                .email(userDTO.getEmail())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .birthDate(userDTO.getBirthDate())
+                .gender(userDTO.getGender())
+                .address(userDTO.getAddress());
+        userService.update(user);
+        userDTO.setId(id);
+        return userDTO;
     }
 
     @Override
