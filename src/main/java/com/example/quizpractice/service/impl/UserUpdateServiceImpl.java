@@ -33,7 +33,8 @@ public class UserUpdateServiceImpl implements UserUpdateService {
         User user = new User();
         user.id(id).email(UserDTO.getEmail()).firstName(UserDTO.getFirstName())
                 .lastName(UserDTO.getLastName()).birthDate(UserDTO.getBirthDate())
-                .gender(UserDTO.getGender()).address(UserDTO.getAddress());
+                .gender(UserDTO.getGender()).address(UserDTO.getAddress()).isDeleted(0L);
+        user.setActive(UserDTO.getActive());
         userService.save(user);
         UserDTO.setId(id);
         return UserDTO;
